@@ -31,6 +31,7 @@ END
 end
 
 server.mount_proc '/' do |req, res|
+  debugger
   case req.path
   when '/'
     contr = ExampleController.new(req, res, req.query_string).create
