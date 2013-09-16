@@ -1,11 +1,12 @@
 require 'json'
 require 'webrick'
+require 'debugger'
 
 class Session
   def initialize(req)
     @req = req
-    cookie = @req.cookies.select {|hash| hash.key == "_rails_lite_app" }.first
-    @cookie = cookie ? JSON.parse (cookie) : {}
+    cookie = @req.cookies.select {|cookie| cookie.name == "_rails_lite_app" }.first
+    @cookie = cookie ? JSON.parse(cookie.value) : {}
   end
 
   def [](key)
@@ -17,7 +18,7 @@ class Session
   end
 
   def store_session(res)
-    jsonized_cookie_hash = {"_rails_lite_app" => @cookie.to_json}
-    res.cookies << jsonized_cookie_hash
+    jsonized_content = @cookie.to_json
+    res.cookies << WEBrick::Cookie.new("_rails_lite_app", jsonized_content)
   end
 end

@@ -11,6 +11,7 @@ class ControllerBase
     @req = req
     @res = res
     @already_built_response = false
+    session
   end
 
   def session
@@ -24,12 +25,14 @@ class ControllerBase
     @res.status = 302
     @res.header["location"] = url
     @already_built_response = true
+    session.store_session(@res)
   end
 
   def render_content(content, type)
     @res.body = content
     @res.content_type = type
     @already_built_response = true
+    session.store_session(@res)
   end
 
   def render(template_name)
