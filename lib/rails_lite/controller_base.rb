@@ -12,6 +12,7 @@ class ControllerBase
     @res = res
     @already_built_response = false
     session
+    @params = Params.new(req, route_params)
   end
 
   def session
